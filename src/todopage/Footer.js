@@ -1,5 +1,5 @@
 import React from 'react';
-const {Button, ButtonDelete} =  require('../utils/helpers');
+const {Button} =  require('../utils/helpers');
 
 class Footer extends React.Component {
   isActive = (text) => {
