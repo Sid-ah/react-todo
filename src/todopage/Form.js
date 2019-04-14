@@ -6,9 +6,10 @@ class Form extends React.Component {
     return (
       <form className="form">
         <input type="text" className="form__input" 
-        placeholder="Add todo" onChange={() => console.log('Value here is changing')} value={this.props.todoValue}/>
-        <button className="form__button" type="submit" onClick={() => console.log('trying to submit')}>╋</button>
-        <Todo />
+        placeholder="Add todo" onChange={this.props.handleChange} value={this.props.todoValue}/>
+        <button className="form__button" type="submit" onClick={this.props.handleClick}>╋</button>
+        <Todo todos={this.props.todos} handleToggle={this.props.handleToggle}
+        handleDelete={this.props.handleDelete}/>
       </form>
     )
   }

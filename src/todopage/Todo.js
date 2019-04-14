@@ -17,9 +17,9 @@ class Todo extends React.Component {
     return (
       <ul className="todos-list">
         {
-          this.state.todos.map((item) => {
+          this.props.todos.map((item) => {
             return (
-              <li className="todo-item" key={item.task} onClick={() => console.log('Clicked here')}>
+              <li className="todo-item" key={item.task} onClick={() => this.props.handleToggle(item.id)}>
                   <span className={item.isCompleted ? "todo-item__name disabled" : "todo-item__name"}>{item.task}</span> 
               </li>
             )

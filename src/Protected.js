@@ -26,6 +26,16 @@ class Protected extends React.Component {
 
   handleClick = (event) => {
     event.preventDefault();
+    const todo =  {
+      id: Date.now(),
+      task: this.state.todoValue,
+      todo: this.state.todoValue,
+      isCompleted: false,
+    }
+    this.setState({
+      todoValue: "",
+      todos: [todo, ...this.state.todos],
+    })
   }
 
   componentDidMount() {
@@ -36,15 +46,31 @@ class Protected extends React.Component {
   }
 
   handleToggle = (id) => {
-    
+    this.setState((prevState) => {
+      return {
+        todos: prevState.todos.map((item, i) => {
+          if (item.id === id) {
+            return {
+              ...item,
+              isCompleted: !prevState.todos[i].isCompleted,
+            }
+          }
+          return item;
+        })
+      }
+    })
   }
 
   handleDelete = (id) => {
-
+    this.setState({
+      todos: this.state.todos.filter(item => item.id !== id)
+    })
   }
 
   deleteCompleted = () => {
-  
+    this.setState({
+      todos: this.state.todos.filter(item => !item.done)
+    })
   }
 
   getVisibleTodos = () => {
