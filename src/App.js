@@ -1,7 +1,6 @@
   import React, { Component } from 'react';
   import './App.css';
   import Login from './Login'
-  import Header from './Header'
   import Landing from './Landing'
   import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 
