@@ -2,6 +2,7 @@
   import './App.css';
   import Login from './Login'
   import Header from './Header'
+  import Landing from './Landing'
   import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 
   class App extends Component {
@@ -22,7 +23,7 @@
         <div className="App">
           <header className="App-header">
           <BrowserRouter>
-            <Header />
+            <Landing />
             <Switch>
               <Route exact path="/login" component={Login} />         
             </Switch>
