@@ -2,12 +2,36 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import logo from './img/cosmosdb.png';
+import {connect} from 'react-redux';
+import {firebaseAuth} from './utils/auth';
 
 const baseUrl = process.env.PUBLIC_URL;
 
 class Header extends React.Component {
+  constructor() {
+    super();
+    this.linkToUse = this.linkToUse.bind (this);
+    this.firebaseAuth = firebaseAuth;
+    this.handleSignOut = this.handleSignOut.bind(this)
+  }
+  
+  handleSignOut () {
+    this.firebaseAuth ().signOut ();
+  }
   
   linkToUse () {
+    if (window.location.href.includes ('/protected')) {
+      return (
+        <button className="login " onClick={() => this.handleSignOut ()}>
+          Sign out
+        </button>
+      );
+    }
+    if (this.props.authenticated) {
+      return (
+        <Link className="login" to={`${baseUrl}/protected`}>Dashboard</Link>
+      );
+    }
     return <Link className="login" to={`${baseUrl}/login`}>Login</Link>;
   }
 
@@ -25,4 +49,7 @@ class Header extends React.Component {
   }
 }
 
-export default Header
+const mapStateToProps = state => ({
+  authenticated: state.authenticated,
+});
+export default connect (mapStateToProps, {}) (Header);
