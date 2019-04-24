@@ -7,6 +7,9 @@ import Title from './todopage/Title';
 import Form from './todopage/Form';
 import Footer from './todopage/Footer';
 import './todopage/styles.css'
+import request from 'request';
+
+const url = "https://sidah-demo.azurewebsites.net/api/readFunction?code=LMI2FYneJayfp/sXkUXaOLzbnXb8QDCRU1ggcYkWLQLJ74ebg8aKpQ=="
 
 class Protected extends React.Component {
   constructor(props) {
@@ -26,16 +29,30 @@ class Protected extends React.Component {
 
   handleClick = (event) => {
     event.preventDefault();
-    const todo =  {
-      id: Date.now(),
-      task: this.state.todoValue,
-      todo: this.state.todoValue,
-      isCompleted: false,
+    if (this.state.todoValue !== "") {
+      const todo =  {
+          task: this.state.todoValue,
+          todo: this.state.todoValue,
+          isCompleted: false,
+      }
+      console.log(`todo ${JSON.stringify(todo, null, 2)}`)
+      request.post({
+        headers: {'content-type': 'application/json'},
+        url: 'https://sidah-demo.azurewebsites.net/api/CreateFunction?code=9w2E54kgElXTEekHLUqdNewPx/zym9KQnJ8TBgacdRryRIG/tpcOJg==', 
+        json: todo
+      }, (err, response, body) => {
+        if (err) {
+          console.log('error from making request to API gateway: ' + err)
+        } else {
+          console.log('no error from api gateway request!')
+        }
+        console.log('response body: ', body)
+      })
+      this.setState({
+        todoValue: "",
+        todos: [todo, ...this.state.todos],
+      })
     }
-    this.setState({
-      todoValue: "",
-      todos: [todo, ...this.state.todos],
-    })
   }
 
   componentDidMount() {
@@ -43,6 +60,27 @@ class Protected extends React.Component {
   }
 
   fetchTodos = () => {
+    request.get(url, {
+      headers: {
+        'Accept': 'application/json',
+        'Access-Control-Request-Method': "GET",
+        'Access-Control-Request-Headers': "Content-Type",
+        'auth_token': "L3ut8sJs37jFe55PmDhKxSRhXt7Bik1r4c6lZRafMTqT8WoA5EXHrg=="
+      }
+    }, (err, response, body) => {
+      if (err) {
+        console.log('error from making request to API gateway: ' + err)
+      } else {
+        console.log('no error from api gateway request!')
+      }
+      const type = typeof body
+      let bodyToLog = body
+      if (type === 'string') {
+        bodyToLog = JSON.parse(body)
+      }
+      this.setState({todos: bodyToLog})
+      console.log('response body: ', bodyToLog)
+    })
   }
 
   handleToggle = (id) => {
